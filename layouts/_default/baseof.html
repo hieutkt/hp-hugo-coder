@@ -30,7 +30,7 @@
       <link rel="preload" href="/ttf/Alegreya/Alegreya-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin>
       <link rel="preload" href="/woff2/Alegreya/AlegreyaSC-Bold.woff2" as="font" type="font/woff2" crossorigin>
 
-    {{ if .Site.IsServer }}
+    {{ if hugo.IsServer }}
       {{ $cssOpts := (dict "targetPath" "css/coder.css" "enableSourceMap" true ) }}
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts }}
       <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
@@ -41,7 +41,7 @@
     {{ end }}
 
     {{ if .Site.Params.rtl }}
-      {{ if .Site.IsServer }}
+      {{ if hugo.IsServer }}
         {{ $cssOpts := (dict "targetPath" "css/coder-rtl.css" "enableSourceMap" true ) }}
         {{ $styles := resources.Get "scss/coder-rtl.scss" | resources.ExecuteAsTemplate "style.coder-rtl.css" . | toCSS $cssOpts }}
         <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
@@ -53,7 +53,7 @@
     {{ end }}
 
     {{ if  or (eq .Site.Params.colorScheme "auto") (eq .Site.Params.colorScheme "dark") }}
-      {{ if .Site.IsServer }}
+      {{ if hugo.IsServer }}
         {{ $cssOpts := (dict "targetPath" "css/coder-dark.css" "enableSourceMap" true ) }}
         {{ $styles := resources.Get "scss/coder-dark.scss" | resources.ExecuteAsTemplate "style.coder-dark.css" . | toCSS $cssOpts }}
         <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
@@ -70,7 +70,7 @@
 
     {{ range .Site.Params.customSCSS }}
       {{/* We don't change the targetPath to because it's transparent to users */}}
-      {{ if $.Site.IsServer }}
+      {{ if hugo.IsServer }}
         {{ $cssOpts := (dict "enableSourceMap" true ) }}
         {{ $styles := resources.Get . | toCSS $cssOpts }}
         <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
@@ -111,7 +111,7 @@
       {{ partial "footer.html" . }}
     </main>
 
-    {{ if .Site.IsServer }}
+    {{ if hugo.IsServer }}
       {{ $script := resources.Get "js/coder.js" }}
       <script src="{{ $script.RelPermalink }}"></script>
     {{ else }}
@@ -123,7 +123,7 @@
       <script src="{{ . | relURL }}"></script>
     {{ end }}
 
-    {{ if not .Site.IsServer }}
+    {{ if not hugo.IsServer }}
       {{ template "_internal/google_analytics.html" . }}
 
       {{ if and .Site.Params.fathomAnalytics .Site.Params.fathomAnalytics.siteID }}
