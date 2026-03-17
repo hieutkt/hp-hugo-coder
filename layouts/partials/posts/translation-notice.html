@@ -1,0 +1,21 @@
+{{ if .Params.auto_translated }}
+<div class="notice info">
+  <div class="notice-title">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    {{ if eq .Params.translated_from "vi" }}
+      Auto-translated
+    {{ else if eq .Params.translated_from "en" }}
+      Dịch tự động
+    {{ end }}
+  </div>
+  <div class="notice-content">
+    {{ if eq .Params.translated_from "vi" }}
+      <p>This page was auto-translated from Vietnamese by {{ .Params.translated_by }}.
+      Beware of possible mistranslation and version mismatch with the original.</p>
+    {{ else if eq .Params.translated_from "en" }}
+      <p>Trang này được dịch tự động từ tiếng Anh bởi {{ .Params.translated_by }}.
+      Cẩn thận với khả năng dịch sai và khác biệt so với bản gốc.</p>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
