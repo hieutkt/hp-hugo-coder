@@ -11,20 +11,10 @@
       {{ partial "csp.html" . }}
     {{ end }}
 
-    {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
-    <meta name="description" content="{{ .Description | default (.Summary | default .Site.Params.description ) }}">
-    <meta name="keywords" content="{{ (delimit .Keywords ",") | default .Site.Params.keywords }}">
-
-    {{ if .Params.noindex }}<meta name="robots" content="noindex, nofollow">{{ end }}
-
-    {{ template "_internal/twitter_cards.html" . }}
-    {{ template "_internal/opengraph.html" . }}
+    {{/* Shared with standalone app pages — see layouts/partials/head/site-meta.html */}}
+    {{ partial "head/site-meta.html" . }}
 
     <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-
-    {{ if .Permalink }}
-      <link rel="canonical" href="{{ .Permalink }}">
-    {{ end }}
 
       <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
       <link rel="preload" href="/ttf/Alegreya/Alegreya-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin>
@@ -80,17 +70,9 @@
       {{ end }}
     {{ end }}
 
-    <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_32 | default "/images/favicon-32x32.png" | relURL }}" sizes="32x32">
-    <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_16 | default "/images/favicon-16x16.png" | relURL }}" sizes="16x16">
-
-    <link rel="apple-touch-icon" href="{{ .Site.Params.touchicon | default "/images/apple-touch-icon.png" | relURL }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ .Site.Params.touchicon | default "/images/apple-touch-icon.png" | relURL }}">
-
     {{ range .AlternativeOutputFormats -}}
       {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
     {{ end -}}
-
-    {{ hugo.Generator }}
   </head>
 
   {{ $csClass := "colorscheme-light" }}
@@ -123,33 +105,8 @@
       <script src="{{ . | relURL }}"></script>
     {{ end }}
 
-    {{ if not hugo.IsServer }}
-      {{ template "_internal/google_analytics.html" . }}
-
-      {{ if and .Site.Params.fathomAnalytics .Site.Params.fathomAnalytics.siteID }}
-        {{- partial "analytics/fathom" . -}}
-      {{ end }}
-
-      {{ if and .Site.Params.plausibleAnalytics .Site.Params.plausibleAnalytics.domain }}
-        {{- partial "analytics/plausible" . -}}
-      {{ end }}
-
-      {{ if and .Site.Params.goatCounter .Site.Params.goatCounter.code }}
-        {{- partial "analytics/goatcounter" . -}}
-      {{ end }}
-
-      {{ if and .Site.Params.cloudflare .Site.Params.cloudflare.token }}
-        {{- partial "analytics/cloudflare" . -}}
-      {{ end }}
-
-      {{ if and .Site.Params.matomo .Site.Params.matomo.serverURL }}
-        {{- partial "analytics/matomo" . -}}
-      {{ end }}
-
-      {{ if and .Site.Params.googleTagManager .Site.Params.googleTagManager.id }}
-        {{- partial "analytics/googletagmanager" . -}}
-      {{ end }}
-    {{ end }}
+    {{/* Shared with standalone app pages — see layouts/partials/analytics/all.html */}}
+    {{ partial "analytics/all.html" . }}
   </body>
 
 </html>

@@ -1,0 +1,35 @@
+{{/*
+  Every analytics provider the site knows about, each gated on its own config
+  key. Nothing here reads page context, so it is safe to call from baseof.html
+  or to splice into a standalone app page.
+
+  Wrapped in `not hugo.IsServer` so local `hugo server` browsing never reaches
+  a live counter.
+*/}}
+{{ if not hugo.IsServer }}
+  {{ template "_internal/google_analytics.html" . }}
+
+  {{ if and .Site.Params.fathomAnalytics .Site.Params.fathomAnalytics.siteID }}
+    {{- partial "analytics/fathom" . -}}
+  {{ end }}
+
+  {{ if and .Site.Params.plausibleAnalytics .Site.Params.plausibleAnalytics.domain }}
+    {{- partial "analytics/plausible" . -}}
+  {{ end }}
+
+  {{ if and .Site.Params.goatCounter .Site.Params.goatCounter.code }}
+    {{- partial "analytics/goatcounter" . -}}
+  {{ end }}
+
+  {{ if and .Site.Params.cloudflare .Site.Params.cloudflare.token }}
+    {{- partial "analytics/cloudflare" . -}}
+  {{ end }}
+
+  {{ if and .Site.Params.matomo .Site.Params.matomo.serverURL }}
+    {{- partial "analytics/matomo" . -}}
+  {{ end }}
+
+  {{ if and .Site.Params.googleTagManager .Site.Params.googleTagManager.id }}
+    {{- partial "analytics/googletagmanager" . -}}
+  {{ end }}
+{{ end }}
