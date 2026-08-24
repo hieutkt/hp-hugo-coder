@@ -1,22 +1,47 @@
-<!-- Obtain all backlinks -->
+{{/* Pages whose source actually links to this one.
+
+     This used to be `findRE .BaseFileName .RawContent`, which was wrong twice
+     over. A bare filename matched anywhere in the prose, so any page that
+     merely contained the word counted as a link; and every leaf bundle
+     (content/<dir>/index.md) has the base filename "index", so all bundles
+     claimed each other while none could ever genuinely link to one another.
+
+     So: match a real ref/relref shortcode or a link to this page's URL. A ref
+     may name the page by filename, by slug or by URL segment, with or without
+     a language code and extension, so all three names are accepted. Self is
+     excluded by permalink, and a `noindex` page is never named as a source —
+     it is kept out of search on purpose, and a backlink would publish it. */}}
+{{ $page := . }}
 {{ with .File }}
-    {{ $re := .BaseFileName }}
-    {{ $backlinks := slice }}
-    {{ range site.AllPages }}
-    {{ if and (findRE $re .RawContent) (not (eq $re .File.BaseFileName)) }}
+  {{ $names := slice (or .ContentBaseName .BaseFileName) }}
+  {{ with $page.Params.slug }}{{ $names = $names | append . }}{{ end }}
+  {{ with path.Base (strings.TrimSuffix "/" $page.RelPermalink) }}
+    {{ $names = $names | append . }}
+  {{ end }}
+  {{ $alts := slice }}
+  {{ range uniq $names }}
+    {{ $alts = $alts | append (replaceRE "([.+*?()\\[\\]{}^$|\\\\])" "\\$1" .) }}
+  {{ end }}
+  {{ $ref := printf "{{[<%%][ \t]*(rel)?ref[ \t]+\"[^\"]*(%s)(\\.[a-z][a-z])?(\\.md)?(#[^\"]*)?\"" (delimit $alts "|") }}
+  {{ $link := printf "\\]\\(%s" (replaceRE "([.+*?()\\[\\]{}^$|\\\\])" "\\$1" $page.RelPermalink) }}
+  {{ $backlinks := slice }}
+  {{ range site.RegularPages }}
+    {{ if and (ne .Permalink $page.Permalink) (not .Params.noindex) }}
+      {{ if or (findRE $ref .RawContent 1) (findRE $link .RawContent 1) }}
         {{ $backlinks = $backlinks | append . }}
+      {{ end }}
     {{ end }}
-    {{ end }}
-    <!-- Generate the HTML -->
-    {{ if gt (len $backlinks) 0 }}
+  {{ end }}
+  <!-- Generate the HTML -->
+  {{ with $backlinks }}
     <hr>
     <div class="backlinks">
         <b>{{ ( index site.Data.translations site.Language.Lang ).backlinktext }}</b>
         <ul>
-        {{ range $backlinks }}
+        {{ range . }}
             <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <i>({{ .Date.Format "2006-01-02" }})</i></li>
         {{ end }}
         </ul>
     </div>
-    {{ end }}
+  {{ end }}
 {{ end }}
