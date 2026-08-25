@@ -1,0 +1,22 @@
+// Dark counterpart to _notes.scss. Only the colours that do not come from
+// $fg-color / $link-color inheritance need restating.
+@mixin notes_dark {
+  .container.note {
+    .note-authors::before,
+    .note-journal::before,
+    .note-date::before,
+    .note-topics::before,
+    .note-links::before,
+    .seminar-crumb::before { color: $gruvbox-gray-dark; }
+  }
+}
+
+body.colorscheme-dark {
+  @include notes_dark();
+}
+
+body.colorscheme-auto {
+  @media (prefers-color-scheme: dark) {
+    @include notes_dark();
+  }
+}
