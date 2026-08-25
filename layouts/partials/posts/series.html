@@ -7,7 +7,7 @@
     {{ if gt (len $series.Pages) 1 }}
       <b id="{{ i18n "see_also" | default "See also in" | anchorize }}-{{ anchorize . | safeURL }}">
         {{ i18n "see_also" | default "See also in" }} {{ . }}
-        <a class="heading-link" href="#{{ i18n "see_also" | default "See also in" | anchorize }}-{{ anchorize . | safeURL }}">
+        <a class="heading-link" href="#{{ i18n "see_also" | default "See also in" | anchorize }}-{{ anchorize . | safeURL }}" aria-labelledby="{{ i18n "see_also" | default "See also in" | anchorize }}-{{ anchorize . | safeURL }}">
           <i class="fa fa-link" aria-hidden="true"></i>
         </a>
       </b>
