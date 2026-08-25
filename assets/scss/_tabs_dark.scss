@@ -1,0 +1,27 @@
+@mixin tabs_dark {
+  .tabs {
+    label.tab-label {
+      background-color: $emph-bg-color-dark;
+      border-color: $gruvbox-dark3-dark;
+    }
+
+    input.tab-input:checked + label.tab-label {
+      background-color: $main-bg-color-dark;
+    }
+
+    .tab-content {
+      background-color: $main-bg-color-dark;
+      border-color: $gruvbox-dark3-dark;
+    }
+  }
+}
+
+body.colorscheme-dark {
+  @include tabs_dark();
+}
+
+body.colorscheme-auto {
+  @media (prefers-color-scheme: dark) {
+    @include tabs_dark();
+  }
+}

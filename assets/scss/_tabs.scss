@@ -1,0 +1,85 @@
+// Tab groups, from the {{< tabgroup >}} / {{< tab >}} shortcodes.
+//
+// Ported from upstream hugo-coder, but recoloured onto this theme's Gruvbox
+// palette -- upstream reaches for $alt-bg-color / $darker-alt-bg-color, which
+// are the vestigial Material greys this theme stopped using everywhere else.
+// Labels take $sc-font-family to match the navigation chrome.
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2rem 0 2rem 0;
+  position: relative;
+
+  &.tabs-left {
+    justify-content: flex-start;
+
+    label.tab-label {
+      margin-right: 0.5rem;
+    }
+
+    .tab-content {
+      border-radius: 0 4px 4px 4px;
+    }
+  }
+
+  &.tabs-right {
+    justify-content: flex-end;
+
+    label.tab-label {
+      margin-left: 0.5rem;
+    }
+
+    .tab-content {
+      border-radius: 4px 0 4px 4px;
+    }
+  }
+
+  input.tab-input {
+    display: none;
+  }
+
+  label.tab-label {
+    background-color: $muted-bg-color;
+    border-color: $gruvbox-dark3;
+    border-radius: 4px 4px 0 0;
+
+    border-style: solid;
+    border-bottom-style: hidden;
+    border-width: 1px;
+
+    cursor: pointer;
+    display: inline-block;
+    font-family: $sc-font-family;
+    order: 1;
+    padding: 0.3rem 0.6rem;
+    position: relative;
+    top: 1px;
+    user-select: none;
+  }
+
+  input.tab-input:checked + label.tab-label {
+    background-color: $main-bg-color;
+  }
+
+  .tab-content {
+    background-color: $main-bg-color;
+    border-color: $gruvbox-dark3;
+    border-style: solid;
+    border-width: 1px;
+    display: none;
+    order: 2;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  &.tabs-code {
+    .tab-content {
+      padding: 0.5rem;
+
+      pre {
+        margin: 0;
+      }
+    }
+  }
+}
