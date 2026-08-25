@@ -302,6 +302,10 @@ blockquote {
   padding: 10px;
 }
 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 ul.list-tag {
   padding: 0 0 0 0;
   max-width: 100%;
