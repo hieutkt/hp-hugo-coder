@@ -2,7 +2,7 @@
 //
 // Styles for a bibliographic note page: the text column stays narrow, the
 // citation details float into the right gutter as a margin note, and each
-// field is prefixed with a ForkAwesome glyph rather than a spelled-out label.
+// field is prefixed with a Font Awesome glyph rather than a spelled-out label.
 //
 // The markup comes from a site's notes/ layouts. Expected hooks:
 //   .container.note   the page shell
@@ -49,7 +49,8 @@
   .note-date::before,
   .note-topics::before,
   .note-links::before {
-    font-family: ForkAwesome;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
     font-style: normal;
     opacity: 0.55;
     margin-right: 0.4em;
@@ -86,7 +87,8 @@
     @media only screen and (max-width: 768px) { max-width: 100%; }
   }
   .seminar-crumb::before {
-    font-family: ForkAwesome;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
     content: "\f148";                          // level-up
     opacity: 0.55;
     margin-right: 0.4em;
