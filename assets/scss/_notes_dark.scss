@@ -11,6 +11,10 @@
   }
 
   .list-tag li > .note-list-authors { color: $link-color-dark; }
+
+  .container.note .list-tag li > span:not(.note-list-authors) {
+    color: $gruvbox-gray-dark;
+  }
 }
 
 body.colorscheme-dark {

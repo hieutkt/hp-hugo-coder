@@ -111,6 +111,13 @@
   }
 }
 
+// The right-hand column of a note listing is metadata - topics, paper counts,
+// dates. Fade it to the same muted tone the theme uses for marginalia so the
+// title is what the eye lands on.
+.container.note .list-tag li > span:not(.note-list-authors) {
+  color: $gruvbox-light4;
+}
+
 // Author byline under a title in a note listing.
 //
 // ul.list-tag li is a flex row (_base.scss). Wrapping the byline onto a second
