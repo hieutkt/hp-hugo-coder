@@ -9,6 +9,8 @@
     .note-links::before,
     .seminar-crumb::before { color: $gruvbox-gray-dark; }
   }
+
+  .list-tag li > .note-list-authors { color: $link-color-dark; }
 }
 
 body.colorscheme-dark {

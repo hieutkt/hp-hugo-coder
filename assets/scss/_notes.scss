@@ -113,24 +113,39 @@
 
 // Author byline under a title in a note listing.
 //
-// ul.list-tag li is a flex row (_base.scss) whose `> span` children are all
-// flex: 1, so a third child would just squeeze the row into three columns.
-// Let only the rows that carry a byline wrap, and give the byline a full-width
-// basis so it drops onto its own line beneath the title.
+// ul.list-tag li is a flex row (_base.scss). Wrapping the byline onto a second
+// flex line tied its vertical position to the tallest item on the first line,
+// so a topic list that ran to two lines pushed the byline away from the title
+// it belongs to. A two-column grid instead pins the byline to the cell
+// directly beneath the title, whatever the other column does.
 .list-tag li:has(> .note-list-authors) {
-  flex-wrap: wrap;
-}
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  column-gap: 2rem;
+  align-items: start;
 
-.list-tag li > .note-list-authors {
-  flex: 0 0 100%;
-  order: 3;
-  font-size: 1.4rem;
-  line-height: 1.6;
-  opacity: 0.6;
-  padding-left: 1.4rem;
+  > a { grid-column: 1; grid-row: 1; }
+
+  > .note-list-authors {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 1.4rem;
+    line-height: 1.4;
+    color: $link-color;
+  }
+
+  // The right-hand column spans both rows so it stays top-aligned with the
+  // title rather than centring against the pair.
+  > span:not(.note-list-authors) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
 
   @media only screen and (max-width: 768px) {
-    padding-left: 0;
-    font-size: 1.2rem;
+    grid-template-columns: 1fr;
+    column-gap: 0;
+
+    > .note-list-authors { font-size: 1.2rem; }
+    > span:not(.note-list-authors) { grid-column: 1; grid-row: 3; }
   }
 }
