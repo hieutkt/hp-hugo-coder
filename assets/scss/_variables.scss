@@ -4,6 +4,11 @@ $serif-font-family: "Alegreya Variations", -apple-system,BlinkMacSystemFont,Sego
 $sc-font-family: "Alegreya SC Web", -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
 $code-font-family: "Iosevka Custom Web", "SF Mono",Consolas,Liberation Mono,Menlo,monospace;
 $symbol-font-family: "NotoSansSymbols2-Regular", -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+
+// Where the Font Awesome webfonts are served from, relative to the compiled
+// css/coder.css. They live in this theme's static/fonts/, alongside nothing
+// else -- FA's own default is "../webfonts", which is not where we put them.
+$fa-font-path: "../fonts" !default;
 $regular-font-weight: 450;
 $bold-font-weight: 750;
 
