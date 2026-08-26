@@ -27,6 +27,25 @@
           border-top: 2px solid $fg-color-dark;
         }
       }
+
+      .language-menu .language-list {
+        background-color: $emph-bg-color-dark;
+        border-color: $alt-bg-color-dark;
+        box-shadow: 2px 3px 12px adjust-color($emph-bg-color-dark, $lightness: -50%);
+
+        .language-link {
+          color: $fg-color-dark;
+        }
+
+        .is-current {
+          color: $link-color-dark;
+        }
+
+        @media only screen and (max-width: 768px) {
+          background: none;
+          box-shadow: none;
+        }
+      }
     }
 
     #menu-toggle {

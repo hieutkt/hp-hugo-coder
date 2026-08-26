@@ -62,3 +62,6 @@ other = "warning"
 
 [error]
 other = "error"
+
+[language]
+other = "Language"

@@ -21,24 +21,37 @@
           {{ end }}
         {{ end }}
         {{ if hugo.IsMultilingual }}
-          {{ $node := . }}
-          {{ .Scratch.Set "separator" true }}
-          {{ range (default .Site.Home.AllTranslations .Translations) }}
-            {{ if ne $.Site.Language .Language }}
-              {{ if $node.Scratch.Get "separator" }}
-                <li class="navigation-item menu-separator">
-                  <span>|</span>
+          <li class="navigation-item menu-separator">
+            <span>|</span>
+          </li>
+          <li class="navigation-item language-menu">
+            <button type="button" class="language-button" aria-label="{{ i18n "language" }}">
+              <i class="fa fa-language fa-fw" aria-hidden="true"></i>
+            </button>
+            <ul class="language-list">
+              {{ $page := . }}
+              {{ $homes := .Site.Home.AllTranslations }}
+              {{ range .Site.Languages }}
+                {{ $lang := . }}
+                {{ $link := "" }}
+                {{ range $page.AllTranslations }}
+                  {{ if eq .Language.Lang $lang.Lang }}{{ $link = .Permalink }}{{ end }}
+                {{ end }}
+                {{ if not $link }}
+                  {{ range $homes }}
+                    {{ if eq .Language.Lang $lang.Lang }}{{ $link = .Permalink }}{{ end }}
+                  {{ end }}
+                {{ end }}
+                <li>
+                  {{ if eq $lang.Lang $page.Site.Language.Lang }}
+                    <span class="language-link is-current" aria-current="true" title="{{ $lang.LanguageName }}">{{ $lang.Lang | upper }} <i class="fa fa-check" aria-hidden="true"></i></span>
+                  {{ else }}
+                    <a class="language-link" href="{{ $link }}" hreflang="{{ $lang.Lang }}" title="{{ $lang.LanguageName }}">{{ $lang.Lang | upper }}</a>
+                  {{ end }}
                 </li>
-                {{ $node.Scratch.Set "separator" false }}
               {{ end }}
-              <li class="navigation-item">
-                <a href="{{ .Permalink }}">
-                  <i class="fa fa-language" style="font-size: 120%"></i>
-                    {{ .Language.LanguageName | emojify }}
-                </a>
-              </li>
-            {{ end }}
-          {{ end }}
+            </ul>
+          </li>
         {{ end }}
       </ul>
     {{ end }}

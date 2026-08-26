@@ -76,6 +76,116 @@
         }
       }
     }
+
+    // The language switcher: a bare fa-language icon that reveals EN / VI on
+    // hover or keyboard focus. No JS -- :focus-within is what makes the panel
+    // reachable by keyboard and by tap. Below 768px the whole nav is already a
+    // tap-expanded panel, so the list drops inline instead of nesting a second
+    // level of dropdown.
+    .language-menu {
+      // inline-flex rather than line-height: 6rem, because vertical-align on a
+      // Font Awesome glyph centres on the x-height midline and lands a couple
+      // of pixels below the nav text; centring the flex line puts it level.
+      .language-button {
+        display: inline-flex;
+        align-items: center;
+        height: 6rem;
+        background: none;
+        border: 0;
+        padding: 0;
+        margin: 0 1rem;
+        font: inherit;
+        line-height: 1;
+        color: inherit;
+        cursor: pointer;
+
+        i {
+          font-size: 2rem;
+        }
+      }
+
+      .language-list {
+        // Centred on the icon, not right-aligned to the <li>: the button's 1rem
+        // side margins are inside the <li>, so right: 0 hung the panel 10px
+        // past the glyph. The li, button and glyph share a centre, so 50% is it.
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        min-width: 7rem;
+        margin: 0;
+        padding: 0.5rem 0;
+        list-style: none;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s;
+        background-color: $emph-bg-color;
+        border: solid 2px $alt-bg-color;
+        box-shadow: 2px 3px 12px;
+
+        li {
+          margin: 0;
+        }
+
+        // .navigation a, span sets 1.7rem/6rem and display: inline, and
+        // .navigation-item a, span adds 1rem side margins; all three have to go
+        // or every row is six rem tall and indented away from the panel edge.
+        // $fg-color, not the inherited $fg-color-dark: .navigation-item a, span
+        // paints nav text for the dark banner behind it, which is illegible on
+        // this panel. The icon takes `inherit` so the check follows .is-current.
+        .language-link {
+          display: block;
+          margin: 0;
+          padding: 0.4rem 1.6rem;
+          font-size: 1.5rem;
+          line-height: 2.4rem;
+          white-space: nowrap;
+          color: $fg-color;
+
+          i {
+            font-size: 1.2rem;
+            color: inherit;
+          }
+        }
+
+        .is-current {
+          color: $link-color;
+          cursor: default;
+        }
+      }
+
+      &:hover .language-list,
+      &:focus-within .language-list {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      @media only screen and (max-width: 768px) {
+        .language-button {
+          display: none;
+        }
+
+        .language-list {
+          position: static;
+          transform: none;
+          visibility: visible;
+          opacity: 1;
+          display: flex;
+          justify-content: center;
+          gap: 2rem;
+          padding: 0;
+          background: none;
+          border: 0;
+          box-shadow: none;
+
+          .language-link {
+            padding: 0;
+            line-height: 5rem;
+          }
+        }
+      }
+    }
   }
 
   #dark-mode-toggle {
