@@ -15,13 +15,6 @@
   .container.note .list-tag li > span:not(.note-list-authors) {
     color: $gruvbox-gray-dark;
   }
-
-  .container.note .note-toc {
-    border-left-color: $muted-bg-color-dark;
-    background-color: $emph-bg-color-dark;
-
-    .note-toc-title { color: $gruvbox-gray-dark; }
-  }
 }
 
 body.colorscheme-dark {

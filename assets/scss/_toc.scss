@@ -1,3 +1,10 @@
+// Bullets are noise in a jump list. Posts have carried this rule as an inline
+// <style> block from ox-hugo; stating it here covers every page with a TOC,
+// including the ones whose list Hugo generates rather than ox-hugo.
+.ox-hugo-toc ul {
+    list-style: none;
+}
+
 @media (min-width: 768px) {
     /*TOC inspired by https://orgmode.org/worg/ */
     .ox-hugo-toc {

@@ -158,34 +158,3 @@
     > span:not(.note-list-authors) { grid-column: 1; grid-row: 3; }
   }
 }
-
-// Table of contents for a long collection essay (toc = true in front matter).
-// A quiet jump list, not a sidebar: the page is read top to bottom and the
-// list is there for the reader who wants to skip to a block.
-.container.note .note-toc {
-  margin: 0 0 3.2rem;
-  padding: 1.2rem 1.6rem;
-  border-left: 2px solid $muted-bg-color;
-  background-color: $emph-bg-color;
-
-  .note-toc-title {
-    font-family: $sc-font-family;
-    font-size: 1.4rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: $gruvbox-gray;
-    margin-bottom: 0.4rem;
-  }
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    ul { padding-left: 1.6rem; }
-
-    li { margin: 0.3rem 0; }
-  }
-
-  a { font-size: 1.5rem; line-height: 1.4; }
-}
