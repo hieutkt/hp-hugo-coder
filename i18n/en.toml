@@ -65,3 +65,27 @@ other = "error"
 
 [language]
 other = "Language"
+
+[language_switch_auto]
+other = "Machine-translated"
+
+[language_switch_section]
+other = "Not available in {{ .Language }} — opens that section"
+
+[language_switch_home]
+other = "Not available in {{ .Language }} — opens the home page"
+
+[translation_notice_title]
+other = "Auto-translated"
+
+[translation_notice_body]
+other = "This page was auto-translated from {{ .From }} by {{ .By }}. Beware of possible mistranslation and version mismatch with the original."
+
+[language_name_en]
+other = "English"
+
+[language_name_vi]
+other = "Vietnamese"
+
+[translation_notice_body_plain]
+other = "This page was auto-translated. Beware of possible mistranslation and version mismatch with the original."

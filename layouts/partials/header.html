@@ -30,23 +30,70 @@
             </button>
             <ul class="language-list">
               {{ $page := . }}
-              {{ $homes := .Site.Home.AllTranslations }}
               {{ range .Site.Languages }}
                 {{ $lang := . }}
                 {{ $link := "" }}
-                {{ range $page.AllTranslations }}
-                  {{ if eq .Language.Lang $lang.Lang }}{{ $link = .Permalink }}{{ end }}
-                {{ end }}
-                {{ if not $link }}
-                  {{ range $homes }}
-                    {{ if eq .Language.Lang $lang.Lang }}{{ $link = .Permalink }}{{ end }}
+                {{ $state := "" }}
+
+                {{ if eq $lang.Lang $page.Site.Language.Lang }}
+                  {{ $state = "current" }}
+                {{ else }}
+                  {{/* A counterpart of this very page, machine-made or not. */}}
+                  {{ range $page.AllTranslations }}
+                    {{ if eq .Language.Lang $lang.Lang }}
+                      {{ $link = .Permalink }}
+                      {{ if .Params.auto_translated }}
+                        {{ $state = "auto" }}
+                      {{ else }}
+                        {{ $state = "page" }}
+                      {{ end }}
+                    {{ end }}
+                  {{ end }}
+                  {{/* None: offer the same section over there, else that home.
+                       Hugo only builds a section for a language with content in
+                       it, so GetPage is what separates /vi/posts/ (exists) from
+                       /vi/notes/ (does not). */}}
+                  {{ if not $link }}
+                    {{ range site.Sites }}
+                      {{ if eq .Language.Lang $lang.Lang }}
+                        {{ if $page.Section }}
+                          {{ with .GetPage (printf "/%s" $page.Section) }}
+                            {{ $link = .Permalink }}
+                            {{ $state = "section" }}
+                          {{ end }}
+                        {{ end }}
+                        {{ if not $link }}
+                          {{ $link = .Home.Permalink }}
+                          {{ $state = "home" }}
+                        {{ end }}
+                      {{ end }}
+                    {{ end }}
                   {{ end }}
                 {{ end }}
+
                 <li>
-                  {{ if eq $lang.Lang $page.Site.Language.Lang }}
+                  {{ if eq $state "current" }}
                     <span class="language-link is-current" aria-current="true" title="{{ $lang.LanguageName }}">{{ $lang.Lang | upper }} <i class="fa fa-check" aria-hidden="true"></i></span>
                   {{ else }}
-                    <a class="language-link" href="{{ $link }}" hreflang="{{ $lang.Lang }}" title="{{ $lang.LanguageName }}">{{ $lang.Lang | upper }}</a>
+                    {{ $class := "language-link" }}
+                    {{ $title := $lang.LanguageName }}
+                    {{ $marker := "" }}
+                    {{ if eq $state "auto" }}
+                      {{ $class = "language-link is-auto" }}
+                      {{ $title = i18n "language_switch_auto" (dict "Language" $lang.LanguageName) }}
+                      {{ $marker = "fa-robot" }}
+                    {{ else if eq $state "section" }}
+                      {{ $class = "language-link is-fallback" }}
+                      {{ $title = i18n "language_switch_section" (dict "Language" $lang.LanguageName) }}
+                      {{ $marker = "fa-list" }}
+                    {{ else if eq $state "home" }}
+                      {{ $class = "language-link is-fallback" }}
+                      {{ $title = i18n "language_switch_home" (dict "Language" $lang.LanguageName) }}
+                      {{ $marker = "fa-house" }}
+                    {{ end }}
+                    {{/* hreflang only where it is true: a fallback link is not
+                         this page in that language, and saying so misleads. */}}
+                    <a class="{{ $class }}" href="{{ $link }}"{{ if or (eq $state "page") (eq $state "auto") }} hreflang="{{ $lang.Lang }}"{{ end }} title="{{ $title }}">{{ $lang.Lang | upper }}{{ with $marker }} <i class="fa {{ . }}" aria-hidden="true"></i>{{ end }}</a>
                   {{ end }}
                 </li>
               {{ end }}

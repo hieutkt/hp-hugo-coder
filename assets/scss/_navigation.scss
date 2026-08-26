@@ -113,6 +113,9 @@
         left: 50%;
         transform: translateX(-50%);
         z-index: 10;
+        // Content-sized. A wider floor pushes the right edge past the viewport
+        // at ~860px, because the panel is centred on a glyph that already sits
+        // near the container edge.
         min-width: 7rem;
         margin: 0;
         padding: 0.5rem 0;
@@ -143,15 +146,32 @@
           white-space: nowrap;
           color: $fg-color;
 
+          // The state marker -- check, robot, list or house. Sized off the
+          // code beside it and muted, so the two letters stay what you read.
           i {
-            font-size: 1.2rem;
+            font-size: 0.8em;
             color: inherit;
+            opacity: 0.75;
+            margin-left: 0.2rem;
           }
         }
 
         .is-current {
           color: $link-color;
           cursor: default;
+        }
+
+        // A fallback entry does not lead to this page in that language -- it
+        // leads to the section index or the home page -- so it reads quieter
+        // than an entry that does. .is-auto is NOT dimmed: it really is this
+        // page, just machine-made, and the robot alone says so.
+        .is-fallback {
+          opacity: 0.55;
+
+          &:hover,
+          &:focus {
+            opacity: 0.8;
+          }
         }
       }
 
