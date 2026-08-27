@@ -122,14 +122,17 @@
   color: $gruvbox-light4;
 }
 
-// Author byline under a title in a note listing.
+// A note-listing row: title (with optional byline beneath) on the left, muted
+// metadata on the right, stacking to one column on small screens.
 //
 // ul.list-tag li is a flex row (_base.scss). Wrapping the byline onto a second
 // flex line tied its vertical position to the tallest item on the first line,
 // so a topic list that ran to two lines pushed the byline away from the title
 // it belongs to. A two-column grid instead pins the byline to the cell
-// directly beneath the title, whatever the other column does.
-.list-tag li:has(> .note-list-authors) {
+// directly beneath the title, whatever the other column does. Applied to
+// every fullwidth row -- not just those with a byline -- so seminar and
+// collection rows share the papers' geometry.
+.container.note .list-tag.fullwidth li {
   display: grid;
   grid-template-columns: 2fr 1fr;
   column-gap: 2rem;
@@ -143,6 +146,12 @@
     font-size: 1.4rem;
     line-height: 1.4;
     color: $link-color;
+
+    // Role tag on a seminar byline -- "(chair)", "(organisers)".
+    .note-role {
+      font-style: normal;
+      opacity: 0.65;
+    }
   }
 
   // The right-hand column spans both rows so it stays top-aligned with the
