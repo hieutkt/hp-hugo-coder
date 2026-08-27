@@ -1,5 +1,4 @@
 <section class="container list">
-  {{ partial "posts/translation-notice.html" . }}
   <h1 class="title">
     <a class="title-link" href="{{ .Permalink | safeURL }}">
       {{- if eq .Kind "term" -}}
@@ -9,6 +8,7 @@
       {{- i18n (lower .Title) | default .Title | title -}}
     </a>
   </h1>
+  {{ partial "posts/translation-notice.html" . }}
   {{ .Content }}
   <ul>
     {{ range .Paginator.Pages }}

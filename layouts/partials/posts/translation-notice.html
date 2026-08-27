@@ -1,27 +1,18 @@
-{{/* Shown on a page that IS a machine translation. Keyed off the page's own
-     language, not translated_from: the page language is always known, and it
-     is what decides which language to write the warning in. The body degrades
-     when the attribution params are absent, so a page marked auto_translated
-     always says so -- the previous version emitted an empty blue box when
-     translated_from was missing or misspelled. */}}
+{{/* A quiet one-liner on machine-translated pages, rendered below the title
+     by its callers. The mistranslation caveat rides in the tooltip rather
+     than the page. Degrades to a plain "Auto-translated" when the
+     attribution params are absent, so the mark never silently vanishes. */}}
 {{ if .Params.auto_translated }}
   {{ $from := "" }}
-  {{ with .Params.translated_from }}
-    {{ $key := printf "language_name_%s" . }}
-    {{ $from = i18n $key }}
-  {{ end }}
-  {{ $by := .Params.translated_by | default "" }}
-<div class="notice info">
-  <div class="notice-title">
-    <i class="fa fa-robot" aria-hidden="true"></i>
-    {{ i18n "translation_notice_title" }}
-  </div>
-  <div class="notice-content">
-    {{ if and $from $by }}
-      <p>{{ i18n "translation_notice_body" (dict "From" $from "By" $by) }}</p>
-    {{ else }}
-      <p>{{ i18n "translation_notice_body_plain" }}</p>
-    {{ end }}
-  </div>
-</div>
+  {{ with .Params.translated_from }}{{ $from = i18n (printf "language_name_%s" .) }}{{ end }}
+  {{ $by := "" }}
+  {{ with .Params.translated_by }}{{ $by = partial "ai/agent-name.html" . }}{{ end }}
+<p class="ai-attribution" title="{{ i18n "ai_translated_caveat" }}">
+  <i class="fa fa-microchip" aria-hidden="true"></i>
+  {{- if and $from $by }}
+  {{ i18n "ai_translated_line" (dict "From" $from "By" $by) }}
+  {{- else }}
+  {{ i18n "ai_translated_line_plain" }}
+  {{- end }}
+</p>
 {{ end }}

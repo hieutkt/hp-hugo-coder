@@ -1,0 +1,9 @@
+{{/* Normalises an AI-agent identifier for display, so every consumer -- note
+     bylines, translation lines -- renders the same name for the same model.
+     ai_agent uses slugs ("claude-fable-5"), translated_by uses display names
+     ("Claude Opus 4.6"); slugs are humanised, display names pass through. */}}
+{{- $s := . -}}
+{{- if findRE `^[a-z0-9-]+$` $s -}}
+  {{- $s = replace $s "-" " " | title -}}
+{{- end -}}
+{{- $s -}}

@@ -75,11 +75,7 @@ other = "Not available in {{ .Language }} — opens that section"
 [language_switch_home]
 other = "Not available in {{ .Language }} — opens the home page"
 
-[translation_notice_title]
-other = "Auto-translated"
 
-[translation_notice_body]
-other = "This page was auto-translated from {{ .From }} by {{ .By }}. Beware of possible mistranslation and version mismatch with the original."
 
 [language_name_en]
 other = "English"
@@ -87,5 +83,14 @@ other = "English"
 [language_name_vi]
 other = "Vietnamese"
 
-[translation_notice_body_plain]
-other = "This page was auto-translated. Beware of possible mistranslation and version mismatch with the original."
+[ai_written_by]
+other = "Written by"
+
+[ai_translated_line]
+other = "Translated from {{ .From }} by {{ .By }}"
+
+[ai_translated_line_plain]
+other = "Translated"
+
+[ai_translated_caveat]
+other = "May contain mistranslations and version mismatches with the original."

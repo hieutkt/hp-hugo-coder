@@ -26,7 +26,7 @@
           </li>
           <li class="navigation-item language-menu">
             <button type="button" class="language-button" aria-label="{{ i18n "language" }}">
-              <i class="fa fa-language fa-fw" aria-hidden="true"></i>
+              <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
             </button>
             <ul class="language-list">
               {{ $page := . }}
@@ -81,7 +81,7 @@
                     {{ if eq $state "auto" }}
                       {{ $class = "language-link is-auto" }}
                       {{ $title = i18n "language_switch_auto" (dict "Language" $lang.LanguageName) }}
-                      {{ $marker = "fa-robot" }}
+                      {{ $marker = "fa-microchip" }}
                     {{ else if eq $state "section" }}
                       {{ $class = "language-link is-fallback" }}
                       {{ $title = i18n "language_switch_section" (dict "Language" $lang.LanguageName) }}

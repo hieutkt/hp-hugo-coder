@@ -1,5 +1,4 @@
 <section class="container page">
-  {{ partial "posts/translation-notice.html" . }}
   <article>
     <header>
       <h1 class="title">
@@ -7,6 +6,7 @@
           {{ .Title }}
         </a>
       </h1>
+      {{ partial "posts/translation-notice.html" . }}
     </header>
 
     <div class="body-contents">

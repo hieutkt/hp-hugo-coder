@@ -125,11 +125,7 @@ other = "Không có bản {{ .Language }} — mở mục tương ứng"
 [language_switch_home]
 other = "Không có bản {{ .Language }} — mở trang chủ"
 
-[translation_notice_title]
-other = "Dịch tự động"
 
-[translation_notice_body]
-other = "Trang này được dịch tự động từ {{ .From }} bởi {{ .By }}. Cẩn thận với khả năng dịch sai và khác biệt so với bản gốc."
 
 [language_name_en]
 other = "tiếng Anh"
@@ -137,5 +133,14 @@ other = "tiếng Anh"
 [language_name_vi]
 other = "tiếng Việt"
 
-[translation_notice_body_plain]
-other = "Trang này được dịch tự động. Cẩn thận với khả năng dịch sai và khác biệt so với bản gốc."
+[ai_written_by]
+other = "Viết bởi"
+
+[ai_translated_line]
+other = "Dịch từ {{ .From }} bởi {{ .By }}"
+
+[ai_translated_line_plain]
+other = "Đã dịch"
+
+[ai_translated_caveat]
+other = "Có thể có sai sót khi dịch và khác biệt so với bản gốc."

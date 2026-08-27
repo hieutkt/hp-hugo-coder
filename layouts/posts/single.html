@@ -3,7 +3,6 @@
 {{ end }}
 {{ define "content" }}
   <section class="container post">
-    {{ partial "posts/translation-notice.html" . }}
     <article>
       <header>
         <div class="post-title">
@@ -30,6 +29,7 @@
           {{ with .Page.Params.Categories }}{{ partial "taxonomy/categories.html" . }}{{ end }}
           {{ with .Page.Params.Series }}{{ partial "taxonomy/series.html" . }}{{ end }}
           {{ with .Page.Params.Tags }}{{ partial "taxonomy/tags.html" . }}{{ end }}
+          {{ partial "posts/translation-notice.html" . }}
         </div>
       </header>
 

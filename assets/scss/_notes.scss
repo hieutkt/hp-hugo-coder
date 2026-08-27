@@ -48,7 +48,8 @@
   .note-journal::before,
   .note-date::before,
   .note-topics::before,
-  .note-links::before {
+  .note-links::before,
+  .note-ai::before {
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     font-style: normal;
@@ -60,6 +61,7 @@
   .note-date::before    { content: "\f073"; }  // calendar
   .note-topics::before  { content: "\f02c"; }  // tags
   .note-links::before   { content: "\f08e"; }  // external link
+  .note-ai::before      { content: "\f2db"; }  // microchip: an AI wrote the note
 
   // Below 768px the theme hides every .marginnote behind a chevron. That is
   // right for an aside, wrong for a paper's bibliography -- it is the first
