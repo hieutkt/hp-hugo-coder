@@ -11,7 +11,12 @@
     .seminar-crumb::before { color: $gruvbox-gray-dark; }
   }
 
-  .list-tag li > .note-list-authors { color: $link-color-dark; }
+  // Mirrors the light rule's selector exactly -- the byline lives inside
+  // .container.note .list-tag.fullwidth, and a shorter selector here loses
+  // the specificity race and leaves the byline light-mode red.
+  .container.note .list-tag.fullwidth li > .note-list-authors {
+    color: $link-color-dark;
+  }
 
   .container.note .list-tag li > span:not(.note-list-authors) {
     color: $gruvbox-gray-dark;
