@@ -15,9 +15,9 @@
     <li>
         <span class="date">
             {{ if in .Page.Params.series "Reading notes" }}
-            {{ print "Notes on:" }}
+            {{ i18n "notes_on" | default "Notes on:" }}
             {{ else }}
-            {{ .Date.Format (.Site.Params.dateFormat | default "January 2, 2006" ) }}
+            {{ time.Format (.Site.Params.dateFormat | default "January 2, 2006") .Date }}
             {{ end }}
         </span>
       <a class="title" href="{{ .Params.externalLink | default .RelPermalink }}">{{ .Title }}</a>

@@ -144,3 +144,6 @@ other = "Đã dịch"
 
 [ai_translated_caveat]
 other = "Có thể có sai sót khi dịch và khác biệt so với bản gốc."
+
+[notes_on]
+other = "Ghi chú về:"

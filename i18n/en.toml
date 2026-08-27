@@ -94,3 +94,6 @@ other = "Translated"
 
 [ai_translated_caveat]
 other = "May contain mistranslations and version mismatches with the original."
+
+[notes_on]
+other = "Notes on:"
