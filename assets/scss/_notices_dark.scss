@@ -4,6 +4,15 @@
       border-bottom: 1px solid $bg-color-dark;
     }
   }
+  // The bright accents are ink-dark, tuned for the cream background;
+  // on the dark slate the faded set keeps the icons legible.
+  .notice.note .notice-title i { color: $gruvbox-faded-purple; }
+  .notice.tip .notice-title i { color: $gruvbox-faded-aqua; }
+  .notice.example .notice-title i { color: $gruvbox-faded-orange; }
+  .notice.question .notice-title i { color: $gruvbox-faded-green; }
+  .notice.info .notice-title i { color: $gruvbox-faded-blue; }
+  .notice.warning .notice-title i { color: $gruvbox-faded-yellow; }
+  .notice.error .notice-title i { color: $gruvbox-faded-red; }
 }
 
 body.colorscheme-dark {
