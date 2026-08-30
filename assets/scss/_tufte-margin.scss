@@ -27,6 +27,17 @@
     @extend .tufte-margin-reduced;
 }
 
+// Goldmark's passthrough extension emits block math ($$...$$ and \[...\]) as
+// a bare text node -- no <p> around it -- so KaTeX's auto-render leaves the
+// .katex-display box inside a plain inline <span>. An inline box ignores
+// max-width, so the measure rule above never reaches the equation and it
+// centres on the full container instead of on the text column. Promoting the
+// wrapper to a block hands the equation whatever measure its containing block
+// already has, wherever the math appears (body text, blockquote, list item).
+span:has(> .katex-display) {
+    display: block;
+}
+
 .sidenote, .marginnote, figcaption {
     @extend .tufte-margin
 }
