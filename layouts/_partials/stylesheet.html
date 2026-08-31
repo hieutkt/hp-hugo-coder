@@ -1,0 +1,38 @@
+{{/*  Transpile one SCSS entry point and emit its <link>.
+
+      Dart Sass, not the embedded LibSass that `toCSS` defaults to -- Hugo
+      deprecated LibSass in 0.153 and will remove it.
+
+      The silenced deprecations are all Dart Sass 3.0 removals that this
+      stylesheet tree has not been migrated for yet, and each is its own piece
+      of work rather than something to ride along with a transpiler swap:
+        import          -- every partial still uses @import; @use/@forward
+                           changes variable scoping across ~40 files
+        global-builtin  -- unnamespaced map-get/if/percentage etc.
+        color-functions -- lighten()/darken(), now color.adjust()
+        if-function     -- vendored in Font Awesome 6.7.2, not ours to fix
+      Left unsilenced, they put over 300 warnings in every build log, which is
+      how real warnings get missed.
+
+      Dart Sass drops the @charset "UTF-8" that LibSass emitted, and the CSS
+      does contain raw UTF-8 (emoji and Vietnamese in `content:` values). That
+      is safe here because the HTTP charset parameter wins over @charset and
+      Netlify serves text/css; charset=UTF-8.
+
+      Under `hugo server` the stylesheet is unminified, carries a source map
+      and no integrity hash, so a rule can be traced back to the partial that
+      declared it. A production build minifies, fingerprints and pins SRI.
+
+      Args: "path" (required), "targetPath" (optional).
+*/}}
+{{- $opts := dict "transpiler" "dartsass" "silenceDeprecations" (slice "import" "global-builtin" "color-functions" "if-function") -}}
+{{- with .targetPath }}{{ $opts = merge $opts (dict "targetPath" .) }}{{ end -}}
+{{- with resources.Get .path -}}
+  {{- if hugo.IsServer -}}
+    {{- $css := . | css.Sass (merge $opts (dict "enableSourceMap" true)) -}}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}" media="screen">
+  {{- else -}}
+    {{- $css := . | css.Sass $opts | minify | fingerprint -}}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous" media="screen" />
+  {{- end -}}
+{{- end -}}

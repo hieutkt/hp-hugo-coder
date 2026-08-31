@@ -21,54 +21,23 @@
       <link rel="preload" href="/ttf/Alegreya/Alegreya-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin>
       <link rel="preload" href="/woff2/Alegreya/AlegreyaSC-Bold.woff2" as="font" type="font/woff2" crossorigin>
 
-    {{ if hugo.IsServer }}
-      {{ $cssOpts := (dict "targetPath" "css/coder.css" "enableSourceMap" true ) }}
-      {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts }}
-      <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
-    {{ else }}
-      {{ $cssOpts := (dict "targetPath" "css/coder.css" ) }}
-      {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts | minify | fingerprint }}
-      <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-    {{ end }}
+    {{ partial "stylesheet.html" (dict "path" "scss/coder.scss" "targetPath" "css/coder.css") }}
 
     {{ if .Site.Params.rtl }}
-      {{ if hugo.IsServer }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-rtl.css" "enableSourceMap" true ) }}
-        {{ $styles := resources.Get "scss/coder-rtl.scss" | resources.ExecuteAsTemplate "style.coder-rtl.css" . | toCSS $cssOpts }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
-      {{ else }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-rtl.css" ) }}
-        {{ $styles := resources.Get "scss/coder-rtl.scss" | resources.ExecuteAsTemplate "style.coder-rtl.css" . | toCSS $cssOpts | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-      {{ end }}
+      {{ partial "stylesheet.html" (dict "path" "scss/coder-rtl.scss" "targetPath" "css/coder-rtl.css") }}
     {{ end }}
 
-    {{ if  or (eq .Site.Params.colorScheme "auto") (eq .Site.Params.colorScheme "dark") }}
-      {{ if hugo.IsServer }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-dark.css" "enableSourceMap" true ) }}
-        {{ $styles := resources.Get "scss/coder-dark.scss" | resources.ExecuteAsTemplate "style.coder-dark.css" . | toCSS $cssOpts }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
-      {{ else }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-dark.css" ) }}
-        {{ $styles := resources.Get "scss/coder-dark.scss" | resources.ExecuteAsTemplate "style.coder-dark.css" . | toCSS $cssOpts | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-      {{ end }}
+    {{ if or (eq .Site.Params.colorScheme "auto") (eq .Site.Params.colorScheme "dark") }}
+      {{ partial "stylesheet.html" (dict "path" "scss/coder-dark.scss" "targetPath" "css/coder-dark.css") }}
     {{ end }}
 
     {{ range .Site.Params.customCSS }}
       <link rel="stylesheet" href="{{ . | relURL }}" />
     {{ end }}
 
+    {{/* targetPath is left alone here: it is transparent to users. */}}
     {{ range .Site.Params.customSCSS }}
-      {{/* We don't change the targetPath to because it's transparent to users */}}
-      {{ if hugo.IsServer }}
-        {{ $cssOpts := (dict "enableSourceMap" true ) }}
-        {{ $styles := resources.Get . | toCSS $cssOpts }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
-      {{ else }}
-        {{ $styles := resources.Get . | toCSS | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-      {{ end }}
+      {{ partial "stylesheet.html" (dict "path" .) }}
     {{ end }}
 
     {{ range .AlternativeOutputFormats -}}
