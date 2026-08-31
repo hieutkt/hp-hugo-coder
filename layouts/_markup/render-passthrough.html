@@ -1,0 +1,36 @@
+{{/*  Render math at build time with Hugo's bundled KaTeX (0.16.21), replacing
+      the three jsDelivr requests and the client-side auto-render pass that used
+      to do this in the browser.
+
+      hugo.toml lists '$' among the inline passthrough delimiters, so goldmark
+      hands this hook prose dollar amounts as well as real math: in "you pay
+      $100 to the supplier, $20 in tariff", the span between the two '$' is
+      captured exactly as if it were an expression. KaTeX will happily typeset
+      that -- plain words are valid math -- so the old client-side workaround
+      had to isolate currency '$' in the DOM before auto-render ran.
+
+      The same test now runs here, before KaTeX sees anything: a capture that
+      starts with a digit, contains whitespace, and contains none of \ ^ _ { }
+      is prose, and is handed back verbatim with its delimiters. Real inline
+      math fails at least one of those.
+
+      What the DOM-level workaround could do and this cannot is repair a
+      mis-pairing. Where currency and math interleave in one paragraph, an odd
+      number of '$' makes goldmark pair the wrong ones, and no render hook can
+      see past that. Those now fail the build with a file:line rather than
+      producing quietly wrong output, and the fix is to escape the prose amount
+      as \$ -- which renders as a plain '$' and keeps the count even.
+*/}}
+{{- $isCurrency := and (eq .Type "inline") (findRE `^\d` .Inner) (findRE `\s` .Inner) (not (findRE `[\\^_{}]` .Inner)) -}}
+{{- if $isCurrency -}}
+  {{- printf "$%s$" .Inner -}}
+{{- else -}}
+  {{- $opts := dict "output" "htmlAndMathml" "displayMode" (eq .Type "block") -}}
+  {{- with try (transform.ToMath .Inner $opts) -}}
+    {{- with .Err -}}
+      {{- errorf "KaTeX could not render %q at %s: %s. If this is prose rather than math, an unbalanced '$' upstream has mis-paired the delimiters; escape the prose amount as \\$." $.Inner $.Position . -}}
+    {{- else -}}
+      {{- .Value -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
