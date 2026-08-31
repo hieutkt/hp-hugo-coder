@@ -4,7 +4,7 @@
         <img src="{{ .Site.Params.bannerurl }}" alt=""></img>
     </div>
     <section class="container">
-    <a class="navigation-title" href="{{ .Site.BaseURL | relLangURL }}">
+    <a class="navigation-title" href="{{ site.Home.RelPermalink }}">
       {{ .Site.Title }}
     </a>
     {{ if or .Site.Menus.main hugo.IsMultilingual }}
@@ -30,8 +30,12 @@
             </button>
             <ul class="language-list">
               {{ $page := . }}
-              {{ range .Site.Languages }}
-                {{ $lang := . }}
+              {{/* hugo.Sites, not .Site.Languages: it yields the Site for each
+                   language, so the same loop supplies both the label and the
+                   GetPage/Home used for fallback links below. */}}
+              {{ range hugo.Sites }}
+                {{ $site := . }}
+                {{ $lang := .Language }}
                 {{ $link := "" }}
                 {{ $state := "" }}
 
@@ -54,41 +58,37 @@
                        it, so GetPage is what separates /vi/posts/ (exists) from
                        /vi/notes/ (does not). */}}
                   {{ if not $link }}
-                    {{ range site.Sites }}
-                      {{ if eq .Language.Lang $lang.Lang }}
-                        {{ if $page.Section }}
-                          {{ with .GetPage (printf "/%s" $page.Section) }}
-                            {{ $link = .Permalink }}
-                            {{ $state = "section" }}
-                          {{ end }}
-                        {{ end }}
-                        {{ if not $link }}
-                          {{ $link = .Home.Permalink }}
-                          {{ $state = "home" }}
-                        {{ end }}
+                    {{ if $page.Section }}
+                      {{ with $site.GetPage (printf "/%s" $page.Section) }}
+                        {{ $link = .Permalink }}
+                        {{ $state = "section" }}
                       {{ end }}
+                    {{ end }}
+                    {{ if not $link }}
+                      {{ $link = $site.Home.Permalink }}
+                      {{ $state = "home" }}
                     {{ end }}
                   {{ end }}
                 {{ end }}
 
                 <li>
                   {{ if eq $state "current" }}
-                    <span class="language-link is-current" aria-current="true" title="{{ $lang.LanguageName }}">{{ $lang.Lang | upper }} <i class="fa fa-check" aria-hidden="true"></i></span>
+                    <span class="language-link is-current" aria-current="true" title="{{ $lang.Label }}">{{ $lang.Lang | upper }} <i class="fa fa-check" aria-hidden="true"></i></span>
                   {{ else }}
                     {{ $class := "language-link" }}
-                    {{ $title := $lang.LanguageName }}
+                    {{ $title := $lang.Label }}
                     {{ $marker := "" }}
                     {{ if eq $state "auto" }}
                       {{ $class = "language-link is-auto" }}
-                      {{ $title = i18n "language_switch_auto" (dict "Language" $lang.LanguageName) }}
+                      {{ $title = i18n "language_switch_auto" (dict "Language" $lang.Label) }}
                       {{ $marker = "fa-microchip" }}
                     {{ else if eq $state "section" }}
                       {{ $class = "language-link is-fallback" }}
-                      {{ $title = i18n "language_switch_section" (dict "Language" $lang.LanguageName) }}
+                      {{ $title = i18n "language_switch_section" (dict "Language" $lang.Label) }}
                       {{ $marker = "fa-list" }}
                     {{ else if eq $state "home" }}
                       {{ $class = "language-link is-fallback" }}
-                      {{ $title = i18n "language_switch_home" (dict "Language" $lang.LanguageName) }}
+                      {{ $title = i18n "language_switch_home" (dict "Language" $lang.Label) }}
                       {{ $marker = "fa-house" }}
                     {{ end }}
                     {{/* hreflang only where it is true: a fallback link is not

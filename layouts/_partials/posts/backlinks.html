@@ -36,7 +36,7 @@
   {{ with $backlinks }}
     <hr>
     <div class="backlinks">
-        <b>{{ ( index site.Data.translations site.Language.Lang ).backlinktext }}</b>
+        <b>{{ ( index hugo.Data.translations site.Language.Lang ).backlinktext }}</b>
         <ul>
         {{ range . }}
             <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <i>({{ .Date.Format "2006-01-02" }})</i></li>

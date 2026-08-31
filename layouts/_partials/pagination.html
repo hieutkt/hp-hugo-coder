@@ -12,25 +12,25 @@
     <li class="hidden"><a href="{{ $paginator.Prev.URL }}">&lsaquo;</a></li>
   {{ end }}
   {{ range $paginator.Pagers }}
-    {{ $.Scratch.Set "page_number_flag" false }}
+    {{ $.Store.Set "page_number_flag" false }}
     {{ if gt $paginator.TotalPages $max_links }}
       {{ if le $paginator.PageNumber $lower_limit }}
         {{ if le .PageNumber $max_links }}
-          {{ $.Scratch.Set "page_number_flag" true }}
+          {{ $.Store.Set "page_number_flag" true }}
         {{ end }}
       {{ else if ge $paginator.PageNumber $upper_limit }}
         {{ if gt .PageNumber (sub $paginator.TotalPages $max_links) }}
-          {{ $.Scratch.Set "page_number_flag" true }}
+          {{ $.Store.Set "page_number_flag" true }}
         {{ end }}
       {{ else }}
         {{ if and ( ge .PageNumber (sub $paginator.PageNumber $adjacent_links) ) ( le .PageNumber (add $paginator.PageNumber $adjacent_links) ) }}
-          {{ $.Scratch.Set "page_number_flag" true }}
+          {{ $.Store.Set "page_number_flag" true }}
         {{ end }}
       {{ end }}
     {{ else }}
-      {{ $.Scratch.Set "page_number_flag" true }}
+      {{ $.Store.Set "page_number_flag" true }}
     {{ end }}
-    {{ if eq ($.Scratch.Get "page_number_flag") true }}
+    {{ if eq ($.Store.Get "page_number_flag") true }}
       {{ if eq . $paginator }}
       <li>{{ .PageNumber }}</li>
       {{ else }}
