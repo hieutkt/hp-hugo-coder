@@ -1,3 +1,3 @@
-module github.com/luizdepra/hugo-coder
+module github.com/hieutkt/hp-hugo-coder
 
-go 1.16
+go 1.26
