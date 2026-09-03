@@ -144,7 +144,9 @@
   // inverse is checked: ink #1A1A1A -> #E5E5E5, hair #BDBDBD -> #424242, and
   // the hue rotation keeps the accent warm (#C8502A -> #F9815B) instead of
   // flipping it to cyan. Raster figures are deliberately excluded.
-  img.tikz {
+  // Inlined figures (those carrying parameter annotations) are an <svg>
+  // element rather than an <img>; the filter applies to either.
+  img.tikz, svg.tikz {
     filter: invert(1) hue-rotate(180deg);
   }
 
